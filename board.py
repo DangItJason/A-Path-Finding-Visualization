@@ -7,10 +7,8 @@ Created on Wed May 13 17:20:56 2020
 
 class Board:
     def __init__(self):
-        self.board = []
-#        for i in range(0, 100):
-#            for j in range(0, 100):
-#               ##Fill w/ desired obstacles
+        self.obstacles = []
+
     '''
         Returns list of accessible neighbor nodes.
     '''
@@ -23,21 +21,29 @@ class Board:
         '''
         TODO: Check for obstacles
         '''
-        if i - 1 >= 0 and j >= 0:
+        if i - 1 >= 0 and j >= 0 and (i - 1, j) not in self.obstacles:
             ret.append(Node(i - 1, j, 0, 0))
-        if i >= 0 and j - 1 >= 0:
+        if i >= 0 and j - 1 >= 0 and (i, j - 1) not in self.obstacles:
             ret.append(Node(i, j - 1, 0, 0))
-        if i - 1 >= 0 and j - 1 >= 0:
+        if i - 1 >= 0 and j - 1 >= 0 and (i - 1, j - 1) not in self.obstacles:
             ret.append(Node(i - 1, j - 1, 0, 0))
-        if i + 1 < 100 and j >= 0:
+        if i + 1 < 100 and j >= 0 and (i + 1, j) not in self.obstacles:
             ret.append(Node(i + 1, j, 0, 0))
-        if i >= 0 and j + 1 < 100:
+        if i >= 0 and j + 1 < 100 and (i, j + 1) not in self.obstacles:
             ret.append(Node(i, j + 1, 0, 0))
-        if i + 1 < 100 and j - 1 >= 0:
+        if i + 1 < 100 and j - 1 >= 0 and (i + 1, j - 1) not in self.obstacles:
             ret.append(Node(i + 1, j - 1, 0, 0))
-        if i - 1 >= 0 and j + 1 < 100:
+        if i - 1 >= 0 and j + 1 < 100 and (i - 1, j + 1) not in self.obstacles:
             ret.append(Node(i - 1, j + 1, 0, 0))
-        if i + 1 < 100 and j + 1 < 100:
+        if i + 1 < 100 and j + 1 < 100 and (i + 1, j + 1) not in self.obstacles:
             ret.append(Node(i + 1, j + 1, 0, 0))
 
-        return ret  
+        return ret
+    
+    
+    '''
+        Adds (x, y) coordinate pair to obstacles list
+    '''
+    def addObstacle(self, coord):
+        if (coord not in self.obstacles):
+            self.obstacles.append(coord)
