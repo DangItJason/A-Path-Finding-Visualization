@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed May 13 18:06:23 2020
+Created on Wed May 13 22:04:12 2020
 
 @author: nguye
 """
 
-import pygame
-from tkinter import *
+from gui import App
 
-while True:
-    event = pygame.event.poll()
-    if event.type == pygame.QUIT:
-        pygame.quit()
-    pygame.display.update()
-    
+root = Tk()
+app = App(root)
+root.mainloop()
+
+
+#ID  = 0
+#for i in range(400):
+#    print(app.canvas.itemcget(i, "fill"))

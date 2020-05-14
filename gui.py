@@ -5,7 +5,7 @@ Created on Wed May 13 18:06:23 2020
 @author: nguye
 """
 from tkinter import *
-import random
+from a_star import solve
 
 class App():
     def __init__(self, master):        
@@ -17,30 +17,42 @@ class App():
         self.columns = 100
         self.cellwidth = 25
         self.cellheight = 25
-        
+        self.canvas.bind("<Button-1>", self.click)
+        self.start_button = Button(master, command = self.start, text = "Start")
+        self.start_button.pack(side = BOTTOM)
         self.rect = {}
-        self.oval = {}
         for column in range(20):
             for row in range(20):
                 x1 = column*self.cellwidth
                 y1 = row * self.cellheight
                 x2 = x1 + self.cellwidth
                 y2 = y1 + self.cellheight
-                self.oval[row,column] = self.canvas.create_oval(x1+2,y1+2,x2-2,y2-2, fill="blue", tags="oval")
-                self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, fill="white", tags="rect")
-        self.redraw(1000)
+                self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, \
+                         fill="white", tags="rect")
+#                print(column, row, self.rect[row,column])
     
-    def redraw(self, delay):
-        self.canvas.itemconfig("rect", fill="blue")
-        self.canvas.itemconfig("oval", fill="blue")
-        for i in range(10):
-            row = random.randint(0,19)
-            col = random.randint(0,19)
-            item_id = self.oval[row,col]
-            self.canvas.itemconfig(item_id, fill="green")
-        self.master.after(delay, lambda: self.redraw(delay))
-    
-if __name__ == "__main__":
-    root = Tk()
-    app = App(root)
-    root.mainloop()
+    def click(self, event):
+        if self.canvas.find_withtag(CURRENT):
+            self.canvas.after(5)
+            self.canvas.itemconfig(CURRENT, fill="black")
+        
+    def start(self):
+            
+        ##Find obstacles
+        ID = 1
+        obstacles = []
+        for column in range(20):
+            for row in range(20):
+                if self.canvas.itemcget(ID, "fill") == "black":
+                    obstacles.append((column, row))
+                ID += 1
+        
+        paths = solve(obstacles)
+        IDS = []
+        ID = 1
+        for column in range(20):
+            for row in range(20):
+                if (row, column) in paths:
+                    self.canvas.itemconfig(ID, fill="red")
+                    print("path found", column, row)
+                ID += 1
