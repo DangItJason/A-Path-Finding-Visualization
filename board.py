@@ -4,7 +4,6 @@ Created on Wed May 13 17:20:56 2020
 
 @author: nguye
 """
-
 class Board:
     def __init__(self):
         self.obstacles = []
@@ -18,28 +17,27 @@ class Board:
         i = Neighbor.x
         j = Neighbor.y
         
-        '''
-        TODO: Check for obstacles
-        '''
-        if i - 1 >= 0 and j >= 0 and (i - 1, j) not in self.obstacles:
+      
+        if (i, j) in self.obstacles:
+            return
+        if i - 1 >= 0 and j >= 0 and j < 20 and (i - 1, j) not in self.obstacles:
             ret.append(Node(i - 1, j, 0, 0))
-        if i >= 0 and j - 1 >= 0 and (i, j - 1) not in self.obstacles:
+        if i >= 0 and i < 20 and j - 1 >= 0 and (i, j - 1) not in self.obstacles:
             ret.append(Node(i, j - 1, 0, 0))
-        if i - 1 >= 0 and j - 1 >= 0 and (i - 1, j - 1) not in self.obstacles:
-            ret.append(Node(i - 1, j - 1, 0, 0))
-        if i + 1 < 100 and j >= 0 and (i + 1, j) not in self.obstacles:
+        if i + 1 < 20 and j >= 0 and j < 20 and (i + 1, j) not in self.obstacles:
             ret.append(Node(i + 1, j, 0, 0))
-        if i >= 0 and j + 1 < 100 and (i, j + 1) not in self.obstacles:
+        if i >= 0 and i < 20 and j + 1 < 20 and (i, j + 1) not in self.obstacles:
             ret.append(Node(i, j + 1, 0, 0))
-        if i + 1 < 100 and j - 1 >= 0 and (i + 1, j - 1) not in self.obstacles:
-            ret.append(Node(i + 1, j - 1, 0, 0))
-        if i - 1 >= 0 and j + 1 < 100 and (i - 1, j + 1) not in self.obstacles:
+        if i - 1 >= 0 and j - 1 >= 0 and (i - 1, j - 1) not in self.obstacles and ((i - 1, j) not in self.obstacles and (i, j - 1) not in self.obstacles):
+            ret.append(Node(i - 1, j - 1, 0, 0))
+        if i + 1 < 20 and j - 1 >= 0 and (i + 1, j - 1) not in self.obstacles and ((i + 1, j) not in self.obstacles and (i, j - 1) not in self.obstacles):
+            ret.append(Node(i + 1, j - 1, 0, 0))            
+        if i - 1 >= 0 and j + 1 < 20 and (i - 1, j + 1) not in self.obstacles and ((i - 1, j) not in self.obstacles and (i, j + 1) not in self.obstacles):
             ret.append(Node(i - 1, j + 1, 0, 0))
-        if i + 1 < 100 and j + 1 < 100 and (i + 1, j + 1) not in self.obstacles:
+        if i + 1 < 20 and j + 1 < 20 and (i + 1, j + 1) not in self.obstacles and ((i + 1, j) not in self.obstacles and (i, j + 1) not in self.obstacles):
             ret.append(Node(i + 1, j + 1, 0, 0))
 
         return ret
-    
     
     '''
         Adds (x, y) coordinate pair to obstacles list

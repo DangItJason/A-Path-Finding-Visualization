@@ -18,8 +18,11 @@ class App():
         self.cellwidth = 25
         self.cellheight = 25
         self.canvas.bind("<Button-1>", self.click)
-        self.start_button = Button(master, command = self.start, text = "Start")
+        self.reset_button = Button(master, command = self.reset, text = "Reset grid")
+        self.reset_button.pack(side = BOTTOM)
+        self.start_button = Button(master, command = self.start, text = "Start A* path visualization")
         self.start_button.pack(side = BOTTOM)
+       
         self.rect = {}
         for column in range(20):
             for row in range(20):
@@ -29,30 +32,44 @@ class App():
                 y2 = y1 + self.cellheight
                 self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, \
                          fill="white", tags="rect")
-#                print(column, row, self.rect[row,column])
+                
+    '''
+        Add obstacles to the grid with a mouse click.
     
+    '''
     def click(self, event):
         if self.canvas.find_withtag(CURRENT):
             self.canvas.after(5)
             self.canvas.itemconfig(CURRENT, fill="black")
-        
+    '''
+       Fills canvas with path from A* 
+    '''
     def start(self):
             
         ##Find obstacles
-        ID = 1
         obstacles = []
         for column in range(20):
             for row in range(20):
-                if self.canvas.itemcget(ID, "fill") == "black":
+                if self.canvas.itemcget(self.rect[row, column], "fill") == "black":
                     obstacles.append((column, row))
-                ID += 1
-        
-        paths = solve(obstacles)
-        IDS = []
-        ID = 1
+                    
+        ##Solve. Return path
+        paths = solve(obstacles, self)
+                
+        ##Visualize Path
         for column in range(20):
             for row in range(20):
                 if (row, column) in paths:
-                    self.canvas.itemconfig(ID, fill="red")
+                    self.canvas.itemconfig(self.rect[row, column], fill="red")
                     print("path found", column, row)
-                ID += 1
+        self.canvas.itemconfig(self.rect[0, 0], fill="green")
+        self.canvas.itemconfig(self.rect[19, 19], fill="green")
+#        
+    '''
+    
+        Resets board to all white squares.
+    '''
+    def reset(self):
+        for column in range(20):
+            for row in range(20):
+                self.canvas.itemconfig(self.rect[row, column], fill="white")

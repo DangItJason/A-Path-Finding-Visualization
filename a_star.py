@@ -6,14 +6,22 @@ Created on Tue May 12 21:08:01 2020
 """
 
 
-##Start A* Algorithm**
-def solve(obstacles):
+'''
+    Finds path using A* algorithm from https://brilliant.org/wiki/a-star-search/#references
+    
+    Uses Manhattan distance for calculating heuristic.
+    
+    Returns path of visited nodes.
+'''
+def solve(obstacles, app):
     from node import Node
     from board import Board
+#    import time
+    
     ##Initialize
     Board = Board()
     start = Node(0, 0, 0, 0)
-    end = Node(39, 39, 0, 0)
+    end = Node(19, 19, 0, 0)
     open_list = [start] ##Pending tasks. Nodes that have been visited but neighbors have not been explored.
     closed_list = [] ##Nodes that have been visited and expanded.
     path = []
@@ -26,11 +34,9 @@ def solve(obstacles):
         ##Consider the node with the lowest f score in the open list
         current = min(open_list)
         open_list.remove(current)
-#        print("Current:", current.x, current.y)
         
         ##Done
         if current == end:
-            path.append((19, 19))
             break
         
         closed_list.append(current)
@@ -50,6 +56,6 @@ def solve(obstacles):
                 neighbor.h = neighbor.getHScore(end)
                     
             neighbor.g = neighbor_current_cost
-            path.append((neighbor.x, neighbor.y))
+            path.append((neighbor.y, neighbor.x))
     
     return path

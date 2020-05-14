@@ -10,8 +10,3 @@ from gui import App
 root = Tk()
 app = App(root)
 root.mainloop()
-
-
-#ID  = 0
-#for i in range(400):
-#    print(app.canvas.itemcget(i, "fill"))
